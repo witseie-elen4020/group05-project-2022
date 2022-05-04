@@ -1,5 +1,15 @@
 //Author: Keowa Pretorius - 1877616
-#include "Box_and_Wiskper.h"
+//Compile using:    g++ -std=c++11 Box_and_Wisker.cpp -o Projexe
+//Run using:        ./Projexe
+#include "Box_and_Wisker.h"
+
+//#include <syscall.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <iostream>
+#include <vector>
+#include <algorithm> 
+#include <cmath>
 
 using namespace std;
 
@@ -23,7 +33,7 @@ void Box_and_Wisker_Class::computeValues() {
 
 void Box_and_Wisker_Class::printData() {
     cout << "Sorted vector is:" << endl;
-    for(auto & element : sortedData){
+    for(auto& element : sortedData){
         cout << element << "  ";
     }
     cout << endl;
@@ -31,12 +41,12 @@ void Box_and_Wisker_Class::printData() {
     cout << "Lower wisker = " << lowerWiskerValue << " Q1 = " << Q1Value << " Q2 = " << medianValue << " Q3 = " << Q3Value << " Upper wisker = " << upperWiskerValue << endl;
 
     cout << "Lower outliers:" << endl;
-    for(auto & element : lowOutliers){
+    for(auto& element : lowOutliers){
         cout << element << "  ";
     }
     cout << endl;
     cout << "Higher outliers:" << endl;
-    for(auto & element : highOutliers){
+    for(auto& element : highOutliers){
         cout << element << "  ";
     }
     cout << endl;
@@ -71,7 +81,7 @@ void Box_and_Wisker_Class::computeBoundariesandOutliers() {
     LowerBound = Q1Value - 1.5*IQRValue;
     UpperBound = Q3Value + 1.5*IQRValue;
 
-    for(auto & element : sortedData){
+    for(auto& element : sortedData){
         if(element < LowerBound){
             lowOutliers.push_back(element);
         }
@@ -87,10 +97,10 @@ void Box_and_Wisker_Class::computeBoundariesandOutliers() {
 
 void Box_and_Wisker_Class::computeWiskerBoundaries() {
     bool LowerFound = false; 
-    for(auto & elementParent : sortedData){
+    for(auto& elementParent : sortedData){
         //Lower wisker
         if(!LowerFound){
-            for(auto & elementLowerB : lowOutliers){
+            for(auto& elementLowerB : lowOutliers){
                 if(elementParent >= LowerBound && elementParent != elementLowerB){
                     lowerWiskerValue = elementParent;
                     LowerFound = true;
@@ -98,7 +108,7 @@ void Box_and_Wisker_Class::computeWiskerBoundaries() {
             }
         }
         //Upper wisker
-        for(auto & elementHigherB : highOutliers){
+        for(auto& elementHigherB : highOutliers){
             if(elementParent <= UpperBound && elementParent != elementHigherB){
                 upperWiskerValue = elementParent;
             }
@@ -107,8 +117,7 @@ void Box_and_Wisker_Class::computeWiskerBoundaries() {
 }
 
 //For testing purposes
-/*
-int mainKeowa(){
+int main(){
     //vector<float> testData = {10,6,4,4,3,3,3,2,2,1};  //Outlier = 10
     vector<float> testData = {10,9,9,8,8,8,7,7,5,1};  //Outlier = 1
     Box_and_Wisker_Class Graph;
@@ -119,4 +128,3 @@ int mainKeowa(){
 
     return 0;
 }
-*/
