@@ -1,7 +1,7 @@
 //Author: Keowa Pretorius - 1877616
 //Compile using:    g++ -std=c++11 Box_and_Wisker.cpp -o Projexe
 //Run using:        ./Projexe
-#include "Box_and_Wisker.h"
+#include "../Headers/Box_and_Wisker.h"
 
 //#include <syscall.h>
 #include <stdio.h>

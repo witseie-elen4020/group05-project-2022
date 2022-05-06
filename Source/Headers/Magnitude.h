@@ -4,6 +4,10 @@
 #include <vector>
 #include <cmath>
 #include <iostream>
+#include <time.h>
+#include <unistd.h>
+#include "omp.h"
+
 using namespace std;
 
 class Magnitude{

@@ -3,10 +3,13 @@
 #include <stdio.h>
 #include <time.h>
 #include <unistd.h>
-#include "omp.h"
+#include <fstream>
+#include <sstream>
 #include <vector>
+#include "omp.h"
 #include "./Headers/Magnitude.h"
-
+#include "./Headers/Read_File.h"
+#include "./Headers/Box_and_Wisker.h"
 
 int main(){
 
