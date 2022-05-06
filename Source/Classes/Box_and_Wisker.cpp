@@ -115,7 +115,7 @@ void Box_and_Wisker_Class::computeWiskerBoundaries() {
         }
     }
 }
-
+/*
 //For testing purposes
 int main(){
     //vector<float> testData = {10,6,4,4,3,3,3,2,2,1};  //Outlier = 10
@@ -128,3 +128,4 @@ int main(){
 
     return 0;
 }
+*/
