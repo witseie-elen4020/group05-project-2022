@@ -17,7 +17,9 @@ class Box_and_Wisker_Class {
     public:  
         void sortData(vector<float> unsortedDaData);
         void computeValues();  
-        void printData();         
+        void printData();
+        void printGraph(); 
+        vector<float> getVetor(int vecs);        
          
     private: 
         float upperWiskerValue;
@@ -29,6 +31,7 @@ class Box_and_Wisker_Class {
         vector<float> sortedData;
         vector<float> lowOutliers;
         vector<float> highOutliers;
+        vector<float> resultValues;
 
         void computeQ1();
         void computeMedian();
