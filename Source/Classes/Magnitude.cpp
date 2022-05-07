@@ -10,11 +10,15 @@ Magnitude::Magnitude(vector<float> &x,vector<float> &y, vector<float> &z){
 
 void Magnitude::calcProcess(vector<float> &x,vector<float> &y, vector<float> &z){
     
+    
     if(x.size() == y.size() && x.size() == z.size() ){
+
+        #pragma omp parralel for shared(x,y,z)
         for (int i = 0; i < x.size(); i++)
-        {
+        { 
             calcMagnitude(x[i],y[i],z[i]);
         }
+        
     }
 
     else{cout<<"incorrect sizes\n";};

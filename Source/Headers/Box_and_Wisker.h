@@ -1,14 +1,17 @@
 //Author: Keowa Pretorius - 1877616
-#ifndef Box_and_Wisker_Class_H
-#define Box_and_Wisker_Class_H
 
-#include <syscall.h>
+//#include <syscall.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
 #include <vector>
 #include <algorithm> 
 #include <cmath>
+
+using namespace std;
+
+#ifndef Box_and_Wisker_Class_H
+#define Box_and_Wisker_Class_H
 
 class Box_and_Wisker_Class {      
     public:  
@@ -17,11 +20,11 @@ class Box_and_Wisker_Class {
         void printData();         
          
     private: 
-        float upperWiskerValue = 0.0;
-        float lowerWiskerValue = 0.0;
+        float upperWiskerValue;
+        float lowerWiskerValue;
         float medianValue, Q1Value, Q3Value;
         float IQRValue, UpperBound, LowerBound;
-        int DataSize = 0;
+        int DataSize;
 
         vector<float> sortedData;
         vector<float> lowOutliers;
