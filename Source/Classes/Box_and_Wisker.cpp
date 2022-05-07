@@ -32,7 +32,7 @@ void Box_and_Wisker_Class::computeValues() {
 }
 
 void Box_and_Wisker_Class::printData() {
-    cout << "Sorted vector is:" << endl;
+    cout << "Sorted vector of magnitudes is:" << endl;
     for(auto& element : sortedData){
         cout << element << "  ";
     }
