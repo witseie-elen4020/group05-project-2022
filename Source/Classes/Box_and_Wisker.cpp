@@ -52,6 +52,34 @@ void Box_and_Wisker_Class::printData() {
     cout << endl;
 }
 
+void Box_and_Wisker_Class::printGraph() {
+    //Still in progress
+    resultValues.push_back(lowerWiskerValue);
+    resultValues.push_back(Q1Value);
+    resultValues.push_back(medianValue);
+    resultValues.push_back(Q3Value);
+    resultValues.push_back(upperWiskerValue);
+
+}
+
+vector<float> Box_and_Wisker_Class::getVetor(int vecs) {
+    resultValues.push_back(lowerWiskerValue);
+    resultValues.push_back(Q1Value);
+    resultValues.push_back(medianValue);
+    resultValues.push_back(Q3Value);
+    resultValues.push_back(upperWiskerValue);
+
+    if(vecs == 0){
+        return resultValues;
+    } else if(vecs == 1) {
+        return lowOutliers;
+    } else if(vecs == 2) {
+        return highOutliers;
+    } else {
+        return sortedData;
+    }
+}
+
 void Box_and_Wisker_Class::computeQ1() {
     if(DataSize/2 % 2 == 0){   //Vector size is even
         Q1Value = (sortedData.at(DataSize/4 - 1) + sortedData.at(DataSize/4))/2;
@@ -128,4 +156,4 @@ int main(){
 
     return 0;
 }
-*/
+/**/
