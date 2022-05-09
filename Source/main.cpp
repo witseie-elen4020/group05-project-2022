@@ -29,7 +29,7 @@ int main(){
     
     omp_set_num_threads(8);
 
-    file.read("../Data/Accelerometer.csv", 0.2, 0.3);
+    file.read("../Data/Accelerometer.csv");
 	
 
     x = file.get_x();
