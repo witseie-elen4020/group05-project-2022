@@ -32,7 +32,7 @@ void Box_and_Wisker_Class::computeValues() {
 }
 
 void Box_and_Wisker_Class::printData() {
-    cout << "Sorted vector is:" << endl;
+    cout << "Sorted vector of magnitudes is:" << endl;
     for(auto& element : sortedData){
         cout << element << "  ";
     }
@@ -50,6 +50,34 @@ void Box_and_Wisker_Class::printData() {
         cout << element << "  ";
     }
     cout << endl;
+}
+
+void Box_and_Wisker_Class::printGraph() {
+    //Still in progress
+    resultValues.push_back(lowerWiskerValue);
+    resultValues.push_back(Q1Value);
+    resultValues.push_back(medianValue);
+    resultValues.push_back(Q3Value);
+    resultValues.push_back(upperWiskerValue);
+
+}
+
+vector<float> Box_and_Wisker_Class::getVetor(int vecs) {
+    resultValues.push_back(lowerWiskerValue);
+    resultValues.push_back(Q1Value);
+    resultValues.push_back(medianValue);
+    resultValues.push_back(Q3Value);
+    resultValues.push_back(upperWiskerValue);
+
+    if(vecs == 0){
+        return resultValues;
+    } else if(vecs == 1) {
+        return lowOutliers;
+    } else if(vecs == 2) {
+        return highOutliers;
+    } else {
+        return sortedData;
+    }
 }
 
 void Box_and_Wisker_Class::computeQ1() {
@@ -128,4 +156,4 @@ int main(){
 
     return 0;
 }
-*/
+/**/
