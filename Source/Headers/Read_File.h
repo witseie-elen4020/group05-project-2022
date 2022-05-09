@@ -5,14 +5,15 @@
 #include <string>
 #include <vector>
 #include <sstream>
+//#include <omp.h>
 
 
 class Read_File{
 public:
-    std::vector<std::vector<std::string>> read(std::string fname, float init_time, float final_time);
+    void read(std::string fname);
     void print(std::vector<std::vector<std::string>> data);
     //void del_col(std::vector<std::vector<std::string>> &data, int col);
-    void seperate(std::vector<std::vector<std::string>> data);
+    //void seperate(std::vector<std::vector<std::string>> data);
     void print1(std::vector<float> val);
     std::vector<float> get_x(){return x;};
     std::vector<float> get_y(){return y;};
@@ -21,7 +22,7 @@ public:
 private:
     //float time;
     int count = 0;
-    std::vector<std::vector<std::string>> data;
+    //std::vector<std::vector<std::string>> data;
 	std::vector<std::string> row;
     std::vector<float> x;
     std::vector<float> y;
