@@ -48,7 +48,7 @@ int main(){
     results = calc1.getMagnitudes();
     
     Graph.sortData(results);
-    Graph.printData();    
+    //Graph.printData();    
     
     clock_gettime(CLOCK_MONOTONIC,&realEnd);
     clock_gettime(CLOCK_PROCESS_CPUTIME_ID,&cpuEnd);
