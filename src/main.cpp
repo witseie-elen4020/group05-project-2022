@@ -24,8 +24,8 @@ int main(){
 
     // time variables
     timespec realStart,realEnd;
-    timespec cpuStart,cpuEnd;
-    int realT,cpuT;
+    //timespec cpuStart,cpuEnd;
+    int realT;
     
     omp_set_num_threads(8);
 
@@ -36,13 +36,20 @@ int main(){
 	y = file.get_y();
 	z = file.get_z();
 
+    //for(int i = 0;i<10;i++){
+    //    x.push_back(rand()%10);
+    //    y.push_back(rand()%10);
+    //    z.push_back(rand()%10);
+    //    cout<<x[i]<<"\t"<<y[i]<<"\t"<<z[i]<<"\n";
+    //}
+
     //for(int i = 0;i<x.size();i++){
     //    cout<<x[i]<<"\t"<<y[i]<<"\t"<<z[i]<<"\n";
     //
     //}
 
     clock_gettime(CLOCK_MONOTONIC,&realStart);
-    clock_gettime(CLOCK_PROCESS_CPUTIME_ID,&cpuStart);
+    //clock_gettime(CLOCK_PROCESS_CPUTIME_ID,&cpuStart);
 
     calc1.calcProcess(x,y,z);
     results = calc1.getMagnitudes();
@@ -51,11 +58,11 @@ int main(){
     //Graph.printData();    
     
     clock_gettime(CLOCK_MONOTONIC,&realEnd);
-    clock_gettime(CLOCK_PROCESS_CPUTIME_ID,&cpuEnd);
+    //clock_gettime(CLOCK_PROCESS_CPUTIME_ID,&cpuEnd);
 
     realT = (1000000000 * (realEnd.tv_sec - realStart.tv_sec) + realEnd.tv_nsec - realStart.tv_nsec);
-    cpuT = (1000000000 * (cpuEnd.tv_sec - cpuStart.tv_sec) + cpuEnd.tv_nsec - cpuStart.tv_nsec);
-    printf("CPU Time process: %d nano seconds \nReal Time Process: %d nano seconds\n",cpuT,realT);
+    //cpuT = (1000000000 * (cpuEnd.tv_sec - cpuStart.tv_sec) + cpuEnd.tv_nsec - cpuStart.tv_nsec);
+    printf("Real Total Time Process: %d nano seconds\n",realT);
 
     
     //for(int i = 0;i<results.size();i++){

@@ -38,7 +38,7 @@ void Box_and_Wisker_Class::printData() {
     }
     cout << endl;
     cout << "VecSize = " << DataSize  << endl;
-    cout << "Lower wisker = " << lowerWiskerValue << " Q1 = " << Q1Value << " Q2 = " << medianValue << " Q3 = " << Q3Value << " Upper wisker = " << upperWiskerValue << endl;
+    cout << "Lower wisker = " << lowerWiskerValue << " Q1 = " << Q1Value << " Q2 = " << medianValue << " Q3 = " << Q3Value << " Upper wisker = " << upperWiskerValue <<" IQRValue = "<< IQRValue << endl;
 
     cout << "Lower outliers:" << endl;
     for(auto& element : lowOutliers){
@@ -83,8 +83,10 @@ vector<float> Box_and_Wisker_Class::getVetor(int vecs) {
 void Box_and_Wisker_Class::computeQ1() {
     if(DataSize/2 % 2 == 0){   //Vector size is even
         Q1Value = (sortedData.at(DataSize/4 - 1) + sortedData.at(DataSize/4))/2;
+        Q1Index = (DataSize/4) + 1;
     }else { //Vector size is odd
         Q1Value = sortedData.at(DataSize/4);
+        Q1Index = (DataSize/4);
     }
 }
 
@@ -99,8 +101,10 @@ void Box_and_Wisker_Class::computeMedian() {
 void Box_and_Wisker_Class::computeQ3() {
     if(DataSize/2 % 2 == 0){   //Vector size is even
         Q3Value = (sortedData.at(DataSize - (DataSize/4) - 1) + sortedData.at(DataSize - (DataSize/4)))/2;
+        Q3Index = (DataSize - (DataSize/4)) -1;
     }else { //Vector size is odd
         Q3Value = sortedData.at(3*DataSize/4);
+        Q3Index = 3*DataSize/4;
     }
 }
 
@@ -108,40 +112,72 @@ void Box_and_Wisker_Class::computeBoundariesandOutliers() {
     IQRValue = Q3Value - Q1Value;
     LowerBound = Q1Value - 1.5*IQRValue;
     UpperBound = Q3Value + 1.5*IQRValue;
-
+    
+    #pragma omp parallel for schedule (static) ordered firstprivate(sortedData)
     for(auto& element : sortedData){
         if(element < LowerBound){
+            #pragma omp critical
             lowOutliers.push_back(element);
         }
         if(element > UpperBound){
+            #pragma omp critical
             highOutliers.push_back(element);
         }
     }
-    sort(lowOutliers.begin(), lowOutliers.end());
-    sort(highOutliers.begin(), highOutliers.end());
+    
+    //sort(lowOutliers.begin(), lowOutliers.end());
+    //sort(highOutliers.begin(), highOutliers.end());
 
+    //timespec realStart,realEnd;
+    //int realT;
+    //clock_gettime(CLOCK_MONOTONIC,&realStart);
     computeWiskerBoundaries();
+    //clock_gettime(CLOCK_MONOTONIC,&realEnd);
+    //realT = (1000000000 * (realEnd.tv_sec - realStart.tv_sec) + realEnd.tv_nsec - realStart.tv_nsec);
+    //printf("Real Time Whisker Process: %d nano seconds\n",realT);
 }
 
 void Box_and_Wisker_Class::computeWiskerBoundaries() {
     bool LowerFound = false; 
-    for(auto& elementParent : sortedData){
-        //Lower wisker
-        if(!LowerFound){
-            for(auto& elementLowerB : lowOutliers){
-                if(elementParent >= LowerBound && elementParent != elementLowerB){
-                    lowerWiskerValue = elementParent;
-                    LowerFound = true;
-                }
+    bool upperFound = false;
+
+    #pragma omp parallel for schedule(static) firstprivate(sortedData)
+    for(int i = 0;i<=Q1Index;i++){
+        if(LowerFound){continue;}
+        if(sortedData[i]>= LowerBound){
+                lowerWiskerValue = sortedData[i];
+                LowerFound = true;
             }
-        }
-        //Upper wisker
-        for(auto& elementHigherB : highOutliers){
-            if(elementParent <= UpperBound && elementParent != elementHigherB){
-                upperWiskerValue = elementParent;
-            }
-        }
     }
+
+    #pragma omp parallel for schedule(static) firstprivate(sortedData)
+    for(int i = sortedData.size() -1 ;i>=Q3Index;i--){
+        if(upperFound){continue;}
+        if(sortedData[i]<=UpperBound){
+                upperWiskerValue=sortedData[i];
+                upperFound = true;
+            }
+    }
+
+
+    //for(auto& elementParent : sortedData){
+    //    //Lower wisker
+    //    if(!LowerFound){
+    //        for(auto& elementLowerB : lowOutliers){
+    //            if(elementParent >= LowerBound && elementParent != elementLowerB){
+    //                lowerWiskerValue = elementParent;
+    //                LowerFound = true;
+    //            }
+    //        }
+    //    }
+    //    //Upper wisker
+    //    for(auto& elementHigherB : highOutliers){
+    //        if(elementParent <= UpperBound && elementParent != elementHigherB){
+    //            upperWiskerValue = elementParent;
+    //        }
+    //    }
+    //}
+    
 }
 /*
 //For testing purposes

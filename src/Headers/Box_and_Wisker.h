@@ -26,6 +26,7 @@ class Box_and_Wisker_Class {
         float lowerWiskerValue;
         float medianValue, Q1Value, Q3Value;
         float IQRValue, UpperBound, LowerBound;
+        int Q1Index,Q3Index;
         int DataSize;
 
         vector<float> sortedData;
