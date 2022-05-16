@@ -88,7 +88,7 @@ void Box_and_Wisker_Class::computeQ1() {
         Q1Value = sortedData.at(DataSize/4);
         Q1Index = (DataSize/4);
     }
-    cout<<"Q1: "<<Q1Value<<endl;
+    //cout<<"Q1: "<<Q1Value<<endl;
 }
 
 void Box_and_Wisker_Class::computeMedian() {
@@ -97,7 +97,7 @@ void Box_and_Wisker_Class::computeMedian() {
     }else { //Vector size is odd
         medianValue = sortedData.at((DataSize/2));
     }
-    cout<<"Median: "<<medianValue<<endl;
+    //cout<<"Median: "<<medianValue<<endl;
 }
 
 void Box_and_Wisker_Class::computeQ3() {
@@ -108,16 +108,16 @@ void Box_and_Wisker_Class::computeQ3() {
         Q3Value = sortedData.at(3*DataSize/4);
         Q3Index = 3*DataSize/4;
     }
-    cout<<"Q3: "<<Q3Value<<endl;
+    //cout<<"Q3: "<<Q3Value<<endl;
 }
 
 void Box_and_Wisker_Class::computeBoundariesandOutliers() {
     IQRValue = Q3Value - Q1Value;
     LowerBound = Q1Value - 1.5*IQRValue;
     UpperBound = Q3Value + 1.5*IQRValue;
-    cout<<"Lower Bound: "<<LowerBound<<endl;
-    cout<<"IQR Value: "<<IQRValue<<endl;
-    cout<<"Upper Bound: "<<UpperBound<<endl;
+    //cout<<"Lower Bound: "<<LowerBound<<endl;
+    //cout<<"IQR Value: "<<IQRValue<<endl;
+    //cout<<"Upper Bound: "<<UpperBound<<endl;
     #pragma omp parallel for schedule (static) firstprivate(sortedData)
     for(auto& element : sortedData){
         if(element < LowerBound){
@@ -154,7 +154,7 @@ void Box_and_Wisker_Class::computeWiskerBoundaries() {
                 LowerFound = true;
             }
     }
-    cout<<"Lower Whisker: "<<lowerWiskerValue<<endl;
+    //cout<<"Lower Whisker: "<<lowerWiskerValue<<endl;
 
     #pragma omp parallel for schedule(static) firstprivate(sortedData)
     for(int i = sortedData.size() -1 ;i>=Q3Index;i--){
@@ -164,7 +164,7 @@ void Box_and_Wisker_Class::computeWiskerBoundaries() {
                 upperFound = true;
             }
     }
-    cout<<"Upper Whisker: "<<upperWiskerValue<<endl;
+   // cout<<"Upper Whisker: "<<upperWiskerValue<<endl;
 
 
     //for(auto& elementParent : sortedData){

@@ -27,7 +27,7 @@ int main(){
     // time variables
     timespec realStart,realEnd;
     //timespec cpuStart,cpuEnd;
-    int realT;
+    long int realT;
     omp_set_num_threads(8);
     omp_set_dynamic(1);
     
@@ -92,7 +92,7 @@ int main(){
 
     realT = (1000000000 * (realEnd.tv_sec - realStart.tv_sec) + realEnd.tv_nsec - realStart.tv_nsec);
     //cpuT = (1000000000 * (cpuEnd.tv_sec - cpuStart.tv_sec) + cpuEnd.tv_nsec - cpuStart.tv_nsec);
-    printf("Real Total Time Process: %d nano seconds\n",realT);
+    printf("Real Total Time Process: %ld nano seconds\n",realT);
 
     
     //for(int i = 0;i<results.size();i++){

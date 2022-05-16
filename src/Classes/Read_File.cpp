@@ -15,7 +15,7 @@ void Read_File::file_input(){
             files.push_back(userInput); //store file names into files vector
             }
         }
-        cout<<files.size()<<endl;
+        //cout<<files.size()<<endl;
     }
     if(userInput=="D"){
     while (userInput != "E")    // Loop until user enters the letter e
@@ -26,7 +26,7 @@ void Read_File::file_input(){
             read_dir(userInput); //store file names from directory into files vector
             }
         }
-        cout<<files.size()<<endl;
+        //cout<<files.size()<<endl;
     }
 
 }
