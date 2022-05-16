@@ -15,16 +15,12 @@ using namespace std;
 
 void Box_and_Wisker_Class::sortData(vector<float> unsortedDaData) {
     sortedData = unsortedDaData;
-    sort(sortedData.begin(), sortedData.end());
+    sort(sortedData.begin(), sortedData.end()); //Sort data in ascending order
 
     DataSize = sortedData.size();
     lowerWiskerValue = sortedData.at(0);
     upperWiskerValue = sortedData.at(DataSize - 1);
 
-    computeValues();
-}
-
-void Box_and_Wisker_Class::computeValues() {
     computeQ1();
     computeMedian();
     computeQ3();
@@ -32,14 +28,9 @@ void Box_and_Wisker_Class::computeValues() {
 }
 
 void Box_and_Wisker_Class::printData() {
-    cout << "Sorted vector of magnitudes is:" << endl;
-    for(auto& element : sortedData){
-        cout << element << "  ";
-    }
-    cout << endl;
     cout << "VecSize = " << DataSize  << endl;
     cout << "Lower wisker = " << lowerWiskerValue << " Q1 = " << Q1Value << " Q2 = " << medianValue << " Q3 = " << Q3Value << " Upper wisker = " << upperWiskerValue <<" IQRValue = "<< IQRValue << endl;
-
+/*
     cout << "Lower outliers:" << endl;
     for(auto& element : lowOutliers){
         cout << element << "  ";
@@ -50,34 +41,7 @@ void Box_and_Wisker_Class::printData() {
         cout << element << "  ";
     }
     cout << endl;
-}
-
-void Box_and_Wisker_Class::printGraph() {
-    //Still in progress
-    resultValues.push_back(lowerWiskerValue);
-    resultValues.push_back(Q1Value);
-    resultValues.push_back(medianValue);
-    resultValues.push_back(Q3Value);
-    resultValues.push_back(upperWiskerValue);
-
-}
-
-vector<float> Box_and_Wisker_Class::getVetor(int vecs) {
-    resultValues.push_back(lowerWiskerValue);
-    resultValues.push_back(Q1Value);
-    resultValues.push_back(medianValue);
-    resultValues.push_back(Q3Value);
-    resultValues.push_back(upperWiskerValue);
-
-    if(vecs == 0){
-        return resultValues;
-    } else if(vecs == 1) {
-        return lowOutliers;
-    } else if(vecs == 2) {
-        return highOutliers;
-    } else {
-        return sortedData;
-    }
+*/
 }
 
 void Box_and_Wisker_Class::computeQ1() {
@@ -113,83 +77,20 @@ void Box_and_Wisker_Class::computeBoundariesandOutliers() {
     LowerBound = Q1Value - 1.5*IQRValue;
     UpperBound = Q3Value + 1.5*IQRValue;
     
+    //Use threads to find outliers
     #pragma omp parallel for schedule (static) firstprivate(sortedData)
     for(auto& element : sortedData){
-        if(element < LowerBound){
+        if(element < LowerBound){   //Find outliers below IQR boundary
             #pragma omp critical
             lowOutliers.push_back(element);
         }
-        if(element > UpperBound){
+        if(element > UpperBound){   //Find outliers above IQR boundary
             #pragma omp critical
             highOutliers.push_back(element);
         }
     }
-    
-    //sort(lowOutliers.begin(), lowOutliers.end());
-    //sort(highOutliers.begin(), highOutliers.end());
-
-    //timespec realStart,realEnd;
-    //int realT;
-    //clock_gettime(CLOCK_MONOTONIC,&realStart);
-    computeWiskerBoundaries();
-    //clock_gettime(CLOCK_MONOTONIC,&realEnd);
-    //realT = (1000000000 * (realEnd.tv_sec - realStart.tv_sec) + realEnd.tv_nsec - realStart.tv_nsec);
-    //printf("Real Time Whisker Process: %d nano seconds\n",realT);
+    //Find lower wisker value by excluding outliers from sorted data vector to get first remaining value
+    lowerWiskerValue = sortedData[lowOutliers.size()];
+    //Find upper wisker value by excluding outliers from sorted data vector to get last remaining value
+    upperWiskerValue = sortedData[sortedData.size()-highOutliers.size()-1];
 }
-
-void Box_and_Wisker_Class::computeWiskerBoundaries() {
-    bool LowerFound = false; 
-    bool upperFound = false;
-
-    #pragma omp parallel for schedule(static) firstprivate(sortedData)
-    for(int i = 0;i<=Q1Index;i++){
-        if(LowerFound){continue;}
-        if(sortedData[i]>= LowerBound){
-                lowerWiskerValue = sortedData[i];
-                LowerFound = true;
-            }
-    }
-
-    #pragma omp parallel for schedule(static) firstprivate(sortedData)
-    for(int i = sortedData.size() -1 ;i>=Q3Index;i--){
-        if(upperFound){continue;}
-        if(sortedData[i]<=UpperBound){
-                upperWiskerValue=sortedData[i];
-                upperFound = true;
-            }
-    }
-
-
-    //for(auto& elementParent : sortedData){
-    //    //Lower wisker
-    //    if(!LowerFound){
-    //        for(auto& elementLowerB : lowOutliers){
-    //            if(elementParent >= LowerBound && elementParent != elementLowerB){
-    //                lowerWiskerValue = elementParent;
-    //                LowerFound = true;
-    //            }
-    //        }
-    //    }
-    //    //Upper wisker
-    //    for(auto& elementHigherB : highOutliers){
-    //        if(elementParent <= UpperBound && elementParent != elementHigherB){
-    //            upperWiskerValue = elementParent;
-    //        }
-    //    }
-    //}
-    
-}
-/*
-//For testing purposes
-int main(){
-    //vector<float> testData = {10,6,4,4,3,3,3,2,2,1};  //Outlier = 10
-    vector<float> testData = {10,9,9,8,8,8,7,7,5,1};  //Outlier = 1
-    Box_and_Wisker_Class Graph;
-
-    Graph.sortData(testData);
-    //Graph.computeValues();
-    Graph.printData();
-
-    return 0;
-}
-/**/

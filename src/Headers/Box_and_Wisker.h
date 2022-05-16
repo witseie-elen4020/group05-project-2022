@@ -15,20 +15,12 @@ using namespace std;
 
 class Box_and_Wisker_Class {      
     public:  
-        void sortData(vector<float> unsortedDaData);
-        void computeValues();  
-        void printData();
-        void printGraph(); 
-        vector<float> getVetor(int vecs);   
+        void sortData(vector<float> unsortedDaData); 
+        void printData();  
         void computeQ1();
         void computeMedian();
         void computeQ3();
-        void computeBoundariesandOutliers();
-        void computLowOutliers();
-        void computHighOutliers();
-        void computeWiskerBoundaries();
-        void max();
-        void min();     
+        void computeBoundariesandOutliers();   
          
     private: 
         float upperWiskerValue;
