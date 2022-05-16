@@ -140,11 +140,14 @@ void Box_and_Wisker_Class::computeBoundariesandOutliers() {
 void Box_and_Wisker_Class::computeWiskerBoundaries() {
     bool LowerFound = false; 
     bool upperFound = false;
-
     #pragma omp parallel for schedule(static) firstprivate(sortedData)
     for(int i = 0;i<=Q1Index;i++){
         if(LowerFound){continue;}
-        if(sortedData[i]>= LowerBound){
+        if(sortedData[i]<LowerBound){
+            #pragma omp critical
+            lowOutliers.push_back(sortedData[i]);
+        }
+        else if(sortedData[i]>= LowerBound){
                 lowerWiskerValue = sortedData[i];
                 LowerFound = true;
             }
@@ -153,7 +156,11 @@ void Box_and_Wisker_Class::computeWiskerBoundaries() {
     #pragma omp parallel for schedule(static) firstprivate(sortedData)
     for(int i = sortedData.size() -1 ;i>=Q3Index;i--){
         if(upperFound){continue;}
-        if(sortedData[i]<=UpperBound){
+        if(sortedData[i]<LowerBound){
+            #pragma omp critical
+            lowOutliers.push_back(sortedData[i]);
+        }
+        else if(sortedData[i]<=UpperBound){
                 upperWiskerValue=sortedData[i];
                 upperFound = true;
             }
