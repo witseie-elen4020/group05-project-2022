@@ -118,52 +118,80 @@ void Box_and_Wisker_Class::computeBoundariesandOutliers() {
     //cout<<"Lower Bound: "<<LowerBound<<endl;
     //cout<<"IQR Value: "<<IQRValue<<endl;
     //cout<<"Upper Bound: "<<UpperBound<<endl;
-    #pragma omp parallel for schedule (static) firstprivate(sortedData)
-    for(auto& element : sortedData){
-        if(element < LowerBound){
-            #pragma omp critical
-            lowOutliers.push_back(element);
-        }
-        if(element > UpperBound){
-            #pragma omp critical
-            highOutliers.push_back(element);
-        }
-    }
+    //#pragma omp parallel for schedule (static) firstprivate(sortedData)
+    //for(auto& element : sortedData){
+    //    if(element < LowerBound){
+    //        #pragma omp critical
+    //        lowOutliers.push_back(element);
+    //    }
+    //    if(element > UpperBound){
+    //        #pragma omp critical
+    //        highOutliers.push_back(element);
+    //    }
+    //}
     
     //sort(lowOutliers.begin(), lowOutliers.end());
     //sort(highOutliers.begin(), highOutliers.end());
 
-    timespec realStart,realEnd;
-    int realT;
-    clock_gettime(CLOCK_MONOTONIC,&realStart);
-    computeWiskerBoundaries();
-    clock_gettime(CLOCK_MONOTONIC,&realEnd);
-    realT = (1000000000 * (realEnd.tv_sec - realStart.tv_sec) + realEnd.tv_nsec - realStart.tv_nsec);
-    printf("Real Time Whisker Process: %d nano seconds\n",realT);
-}
-
-void Box_and_Wisker_Class::computeWiskerBoundaries() {
     bool LowerFound = false; 
     bool upperFound = false;
-
     #pragma omp parallel for schedule(static) firstprivate(sortedData)
     for(int i = 0;i<=Q1Index;i++){
         if(LowerFound){continue;}
-        if(sortedData[i]>= LowerBound){
+        if(sortedData[i]<LowerBound){
+            #pragma omp critical
+            lowOutliers.push_back(sortedData[i]);
+        }
+        else if(sortedData[i]>= LowerBound){
                 lowerWiskerValue = sortedData[i];
                 LowerFound = true;
             }
     }
-    //cout<<"Lower Whisker: "<<lowerWiskerValue<<endl;
 
     #pragma omp parallel for schedule(static) firstprivate(sortedData)
     for(int i = sortedData.size() -1 ;i>=Q3Index;i--){
         if(upperFound){continue;}
-        if(sortedData[i]<=UpperBound){
+        if(sortedData[i]<LowerBound){
+            #pragma omp critical
+            lowOutliers.push_back(sortedData[i]);
+        }
+        else if(sortedData[i]<=UpperBound){
                 upperWiskerValue=sortedData[i];
                 upperFound = true;
             }
-    }
+        }
+
+    //timespec realStart,realEnd;
+    //int realT;
+    //clock_gettime(CLOCK_MONOTONIC,&realStart);
+    //computeWiskerBoundaries();
+    //clock_gettime(CLOCK_MONOTONIC,&realEnd);
+    //realT = (1000000000 * (realEnd.tv_sec - realStart.tv_sec) + realEnd.tv_nsec - realStart.tv_nsec);
+    //printf("Real Time Whisker Process: %d nano seconds\n",realT);
+}
+
+void Box_and_Wisker_Class::computeWiskerBoundaries() {
+    //bool LowerFound = false; 
+    //bool upperFound = false;
+
+    //#pragma omp parallel for schedule(static) firstprivate(sortedData)
+    //for(int i = 0;i<=Q1Index;i++){
+    //    if(LowerFound){continue;}
+    //    if(sortedData[i]>= LowerBound){
+    //            lowerWiskerValue = sortedData[i];
+    //            LowerFound = true;
+    //        }
+    //}
+    //cout<<"Lower Whisker: "<<lowerWiskerValue<<endl;
+
+    //#pragma omp parallel for schedule(static) firstprivate(sortedData)
+    //for(int i = sortedData.size() -1 ;i>=Q3Index;i--){
+    //    if(upperFound){continue;}
+    //    if(sortedData[i]<=UpperBound){
+    //            upperWiskerValue=sortedData[i];
+    //            upperFound = true;
+    //        }
+    //}
    // cout<<"Upper Whisker: "<<upperWiskerValue<<endl;
 
 
