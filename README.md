@@ -2,7 +2,7 @@
 
 Build Instructions:
 
-1. Navigate to Source File
+1. Navigate to src Folder in Directory in the Group05 Home directory: /Project/group05-project-2022/src
 2. Open Terminal in directory
 3. run the following command in terminal
     * g++ -std=c++17 -fopenmp -lgomp main.cpp -o test 
