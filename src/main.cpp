@@ -6,6 +6,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <filesystem>
 #include "omp.h"
 #include "./Classes/Magnitude.cpp"
 #include "./Classes/Read_File.cpp"
@@ -31,8 +32,11 @@ int main(){
     omp_set_dynamic(1);
     
     clock_gettime(CLOCK_MONOTONIC,&realStart);
-    file.read("../Data/Accelerometer.csv");
-	
+    //file.read("../Data/Accelerometer.csv");
+    //file.read_dir();
+	file.file_input();
+    file.read_multiple();
+
 
     x = file.get_x();
 	y = file.get_y();
@@ -55,9 +59,33 @@ int main(){
 
     calc1.calcProcess(x,y,z);
     results = calc1.getMagnitudes();
+    cout<<results.size()<<endl;
     
+    //results = file.get_mags();
+    //cout<<file.get_mags().size()<<endl;
+    //results = {100,110,110,110,120,120,130,140,140,150,170,220};
     Graph.sortData(results);
-    //Graph.printData();    
+    //cout<<"done"<<endl;
+    //#pragma omp parallel sections
+    /*
+    #pragma omp parallel 
+    #pragma omp single
+    {
+        #pragma omp task
+            Graph.computeQ1();
+        #pragma omp task
+            Graph.computeMedian();
+        #pragma omp task
+            Graph.computeQ3();
+        #pragma omp task
+            Graph.computeBoundariesandOutliers();
+        #pragma omp task
+            Graph.min();
+        #pragma omp task
+            Graph.max();
+
+    }
+    */   
     
     clock_gettime(CLOCK_MONOTONIC,&realEnd);
     //clock_gettime(CLOCK_PROCESS_CPUTIME_ID,&cpuEnd);
@@ -73,5 +101,5 @@ int main(){
 
 
 }
-
+//g++ -std=c++17 -fopenmp -lgomp main.cpp -o test
 //g++ -fopenmp -lgomp name.c -o name

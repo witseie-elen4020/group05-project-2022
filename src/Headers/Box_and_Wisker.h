@@ -19,7 +19,16 @@ class Box_and_Wisker_Class {
         void computeValues();  
         void printData();
         void printGraph(); 
-        vector<float> getVetor(int vecs);        
+        vector<float> getVetor(int vecs);   
+        void computeQ1();
+        void computeMedian();
+        void computeQ3();
+        void computeBoundariesandOutliers();
+        void computLowOutliers();
+        void computHighOutliers();
+        void computeWiskerBoundaries();
+        void max();
+        void min();     
          
     private: 
         float upperWiskerValue;
@@ -34,11 +43,7 @@ class Box_and_Wisker_Class {
         vector<float> highOutliers;
         vector<float> resultValues;
 
-        void computeQ1();
-        void computeMedian();
-        void computeQ3();
-        void computeBoundariesandOutliers();
-        void computeWiskerBoundaries();
+        
 
 };
 
