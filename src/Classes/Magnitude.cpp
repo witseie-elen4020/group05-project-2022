@@ -12,9 +12,9 @@ void Magnitude::calcProcess(vector<float> &x,vector<float> &y, vector<float> &z)
     
     if(x.size() == y.size() && x.size() == z.size() ){
 
-        #pragma omp parallel for schedule( static ) ordered firstprivate(x,y,z)
+        #pragma omp parallel for schedule( dynamic ) firstprivate(x,y,z)
         for (int i = 0; i < x.size(); i++)
-        { 
+        {   //cout<<omp_get_num_threads()<<endl;
             calcMagnitude(x[i],y[i],z[i]);
         }
         

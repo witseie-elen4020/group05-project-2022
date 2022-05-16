@@ -32,11 +32,11 @@ void Box_and_Wisker_Class::computeValues() {
 }
 
 void Box_and_Wisker_Class::printData() {
-    cout << "Sorted vector of magnitudes is:" << endl;
-    for(auto& element : sortedData){
-        cout << element << "  ";
-    }
-    cout << endl;
+    //cout << "Sorted vector of magnitudes is:" << endl;
+    //for(auto& element : sortedData){
+    //    cout << element << "  ";
+    //}
+    //cout << endl;
     cout << "VecSize = " << DataSize  << endl;
     cout << "Lower wisker = " << lowerWiskerValue << " Q1 = " << Q1Value << " Q2 = " << medianValue << " Q3 = " << Q3Value << " Upper wisker = " << upperWiskerValue <<" IQRValue = "<< IQRValue << endl;
 
@@ -113,7 +113,7 @@ void Box_and_Wisker_Class::computeBoundariesandOutliers() {
     LowerBound = Q1Value - 1.5*IQRValue;
     UpperBound = Q3Value + 1.5*IQRValue;
     
-    #pragma omp parallel for schedule (static) ordered firstprivate(sortedData)
+    #pragma omp parallel for schedule (static) firstprivate(sortedData)
     for(auto& element : sortedData){
         if(element < LowerBound){
             #pragma omp critical
@@ -128,13 +128,13 @@ void Box_and_Wisker_Class::computeBoundariesandOutliers() {
     //sort(lowOutliers.begin(), lowOutliers.end());
     //sort(highOutliers.begin(), highOutliers.end());
 
-    //timespec realStart,realEnd;
-    //int realT;
-    //clock_gettime(CLOCK_MONOTONIC,&realStart);
+    timespec realStart,realEnd;
+    int realT;
+    clock_gettime(CLOCK_MONOTONIC,&realStart);
     computeWiskerBoundaries();
-    //clock_gettime(CLOCK_MONOTONIC,&realEnd);
-    //realT = (1000000000 * (realEnd.tv_sec - realStart.tv_sec) + realEnd.tv_nsec - realStart.tv_nsec);
-    //printf("Real Time Whisker Process: %d nano seconds\n",realT);
+    clock_gettime(CLOCK_MONOTONIC,&realEnd);
+    realT = (1000000000 * (realEnd.tv_sec - realStart.tv_sec) + realEnd.tv_nsec - realStart.tv_nsec);
+    printf("Real Time Whisker Process: %d nano seconds\n",realT);
 }
 
 void Box_and_Wisker_Class::computeWiskerBoundaries() {

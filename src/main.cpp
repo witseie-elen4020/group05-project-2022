@@ -11,6 +11,7 @@
 #include "./Classes/Read_File.cpp"
 #include "./Classes/Box_and_Wisker.cpp"
 
+
 int main(){
 
     //objects
@@ -26,9 +27,10 @@ int main(){
     timespec realStart,realEnd;
     //timespec cpuStart,cpuEnd;
     int realT;
-    
     omp_set_num_threads(8);
-
+    omp_set_dynamic(1);
+    
+    clock_gettime(CLOCK_MONOTONIC,&realStart);
     file.read("../Data/Accelerometer.csv");
 	
 
@@ -48,7 +50,7 @@ int main(){
     //
     //}
 
-    clock_gettime(CLOCK_MONOTONIC,&realStart);
+    
     //clock_gettime(CLOCK_PROCESS_CPUTIME_ID,&cpuStart);
 
     calc1.calcProcess(x,y,z);
