@@ -20,7 +20,7 @@ void Read_File::file_input(){
     if(userInput=="D"){
     while (userInput != "E")    // Loop until user enters the letter e
         {
-            cout << "Please enter adirectory name" << endl;
+            cout << "Please enter a directory name" << endl;
             cin >> userInput;
             if(userInput != "E"){
             read_dir(userInput); //store file names from directory into files vector

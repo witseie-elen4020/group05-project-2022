@@ -27,7 +27,7 @@ int main(){
     // time variables
     timespec realStart,realEnd;
     //timespec cpuStart,cpuEnd;
-    long int realT;
+    int realT;
     omp_set_num_threads(8);
     omp_set_dynamic(1);
     
@@ -59,12 +59,13 @@ int main(){
 
     calc1.calcProcess(x,y,z);
     results = calc1.getMagnitudes();
-    cout<<results.size()<<endl;
+    //cout<<results.size()<<endl;
     
     //results = file.get_mags();
     //cout<<file.get_mags().size()<<endl;
     //results = {100,110,110,110,120,120,130,140,140,150,170,220};
     Graph.sortData(results);
+    Graph.printGraph();
     //cout<<"done"<<endl;
     //#pragma omp parallel sections
     /*
@@ -92,7 +93,7 @@ int main(){
 
     realT = (1000000000 * (realEnd.tv_sec - realStart.tv_sec) + realEnd.tv_nsec - realStart.tv_nsec);
     //cpuT = (1000000000 * (cpuEnd.tv_sec - cpuStart.tv_sec) + cpuEnd.tv_nsec - cpuStart.tv_nsec);
-    printf("Real Total Time Process: %ld nano seconds\n",realT);
+    printf("Real Total Time Process: %d nano seconds\n",realT);
 
     
     //for(int i = 0;i<results.size();i++){

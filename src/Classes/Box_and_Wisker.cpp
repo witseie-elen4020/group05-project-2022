@@ -32,11 +32,11 @@ void Box_and_Wisker_Class::computeValues() {
 }
 
 void Box_and_Wisker_Class::printData() {
-    //cout << "Sorted vector of magnitudes is:" << endl;
-    //for(auto& element : sortedData){
-    //    cout << element << "  ";
-    //}
-    //cout << endl;
+    cout << "Sorted vector of magnitudes is:" << endl;
+    for(auto& element : sortedData){
+        cout << element << "  ";
+    }
+    cout << endl;
     cout << "VecSize = " << DataSize  << endl;
     cout << "Lower wisker = " << lowerWiskerValue << " Q1 = " << Q1Value << " Q2 = " << medianValue << " Q3 = " << Q3Value << " Upper wisker = " << upperWiskerValue <<" IQRValue = "<< IQRValue << endl;
 
@@ -88,7 +88,6 @@ void Box_and_Wisker_Class::computeQ1() {
         Q1Value = sortedData.at(DataSize/4);
         Q1Index = (DataSize/4);
     }
-    //cout<<"Q1: "<<Q1Value<<endl;
 }
 
 void Box_and_Wisker_Class::computeMedian() {
@@ -97,7 +96,6 @@ void Box_and_Wisker_Class::computeMedian() {
     }else { //Vector size is odd
         medianValue = sortedData.at((DataSize/2));
     }
-    //cout<<"Median: "<<medianValue<<endl;
 }
 
 void Box_and_Wisker_Class::computeQ3() {
@@ -108,16 +106,13 @@ void Box_and_Wisker_Class::computeQ3() {
         Q3Value = sortedData.at(3*DataSize/4);
         Q3Index = 3*DataSize/4;
     }
-    //cout<<"Q3: "<<Q3Value<<endl;
 }
 
 void Box_and_Wisker_Class::computeBoundariesandOutliers() {
     IQRValue = Q3Value - Q1Value;
     LowerBound = Q1Value - 1.5*IQRValue;
     UpperBound = Q3Value + 1.5*IQRValue;
-    //cout<<"Lower Bound: "<<LowerBound<<endl;
-    //cout<<"IQR Value: "<<IQRValue<<endl;
-    //cout<<"Upper Bound: "<<UpperBound<<endl;
+    
     #pragma omp parallel for schedule (static) firstprivate(sortedData)
     for(auto& element : sortedData){
         if(element < LowerBound){
@@ -133,13 +128,13 @@ void Box_and_Wisker_Class::computeBoundariesandOutliers() {
     //sort(lowOutliers.begin(), lowOutliers.end());
     //sort(highOutliers.begin(), highOutliers.end());
 
-    timespec realStart,realEnd;
-    int realT;
-    clock_gettime(CLOCK_MONOTONIC,&realStart);
+    //timespec realStart,realEnd;
+    //int realT;
+    //clock_gettime(CLOCK_MONOTONIC,&realStart);
     computeWiskerBoundaries();
-    clock_gettime(CLOCK_MONOTONIC,&realEnd);
-    realT = (1000000000 * (realEnd.tv_sec - realStart.tv_sec) + realEnd.tv_nsec - realStart.tv_nsec);
-    printf("Real Time Whisker Process: %d nano seconds\n",realT);
+    //clock_gettime(CLOCK_MONOTONIC,&realEnd);
+    //realT = (1000000000 * (realEnd.tv_sec - realStart.tv_sec) + realEnd.tv_nsec - realStart.tv_nsec);
+    //printf("Real Time Whisker Process: %d nano seconds\n",realT);
 }
 
 void Box_and_Wisker_Class::computeWiskerBoundaries() {
@@ -154,7 +149,6 @@ void Box_and_Wisker_Class::computeWiskerBoundaries() {
                 LowerFound = true;
             }
     }
-    //cout<<"Lower Whisker: "<<lowerWiskerValue<<endl;
 
     #pragma omp parallel for schedule(static) firstprivate(sortedData)
     for(int i = sortedData.size() -1 ;i>=Q3Index;i--){
@@ -164,7 +158,6 @@ void Box_and_Wisker_Class::computeWiskerBoundaries() {
                 upperFound = true;
             }
     }
-   // cout<<"Upper Whisker: "<<upperWiskerValue<<endl;
 
 
     //for(auto& elementParent : sortedData){
@@ -186,36 +179,6 @@ void Box_and_Wisker_Class::computeWiskerBoundaries() {
     //}
     
 }
-/*
-void Box_and_Wisker_Class::min(){
-    bool LowerFound = false; 
-    //for(auto& elementParent : sortedData){
-        //Lower wisker
-    #pragma omp parallel for schedule(static) firstprivate(sortedData)
-    for(int i = 0; i<sortedData.size(); i++){
-        if(sortedData[i]>=LowerBound & LowerFound == false){
-            lowerWiskerValue = sortedData[i];
-            LowerFound = true;
-            cout<<"min "<<lowerWiskerValue<<endl;
-            //return lowerWiskerValue;
-        }
-    }
-
-}
-void Box_and_Wisker_Class::max(){
-    bool UpperFound = false;
-    #pragma omp parallel for schedule(static) firstprivate(sortedData)
-    for(int i = sortedData.size()-1; i>0; i--){
-        if(sortedData[i]<=UpperBound & UpperFound == false){
-            upperWiskerValue = sortedData[i];
-            UpperFound = true;
-            cout<<"max "<<upperWiskerValue<<endl;
-            //return upperWiskerValue;
-        }
-    }
-    
-}
-*/
 /*
 //For testing purposes
 int main(){
