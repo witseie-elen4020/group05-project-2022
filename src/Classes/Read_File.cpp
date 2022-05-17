@@ -76,7 +76,7 @@ void Read_File::read(std::string fname){
 void Read_File::read_multiple(){
     int i;
     //files.size()
-    for(  i = 0 ; i<1 ; i++ ){
+    for(  i = 0 ; i<files.size() ; i++ ){
         read(files[i]);
     }
     
