@@ -1,6 +1,6 @@
 # group05-project-2022
 
-Build Instructions:
+Build and Run Instructions:
 
 1. Navigate to src Folder in Directory in the Group05 Home directory: /Project/group05-project-2022/src
 2. Open Terminal in directory
